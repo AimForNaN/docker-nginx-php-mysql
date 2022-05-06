@@ -11,17 +11,28 @@ services:
       - ./www:/var/www
       - ./logs/nginx:/var/log/nginx
     links:
+      - mysql
       - php
   php:
     image: php:8-fpm
     build:
       context: ./build
       dockerfile: Dockerfile
+    env_file:
+      - db.env
     networks:
       - internal
     volumes:
       - ./www:/var/www
       - ./conf/nginx.conf:/usr/local/etc/php-fpm.d/nginx.conf
+  mysql:
+    image: mysql:latest
+    env_file:
+      - db.env
+    ports:
+      - 3306:3306
+    networks:
+      - internal
 networks:
   internal:
     driver: bridge
