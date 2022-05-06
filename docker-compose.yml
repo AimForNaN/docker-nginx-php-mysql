@@ -14,6 +14,9 @@ services:
       - php
   php:
     image: php:8-fpm
+    build:
+      context: ./build
+      dockerfile: Dockerfile
     networks:
       - internal
     volumes:
